@@ -1,12 +1,14 @@
-package com.eniola.bakeit.data.networking;
+package com.eniola.bakeit.data;
 
-import com.eniola.bakeit.data.models.RecipeModel;
+import com.eniola.bakeit.models.RecipeModel;
+
+import java.util.List;
 
 public interface RecipeDataInterface {
 
     interface OnRecipeFetchedListener{
 
-        void  onRecipeSuccessful(RecipeModel recipeModel);
+        void  onRecipeSuccessful(List<RecipeModel> recipeModel);
         void onRecipeFailed(String errorMessage);
     }
 
