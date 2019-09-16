@@ -1,4 +1,4 @@
-package com.eniola.bakeit.data.models;
+package com.eniola.bakeit.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

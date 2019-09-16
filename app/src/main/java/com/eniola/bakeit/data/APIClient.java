@@ -1,4 +1,4 @@
-package com.eniola.bakeit.data.networking;
+package com.eniola.bakeit.data;
 
 import com.eniola.bakeit.BuildConfig;
 import com.google.gson.Gson;

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="16dp"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         app:cardElevation="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,6 +24,7 @@
                 android:adjustViewBounds="true"
                 tools:ignore="ContentDescription"
                 android:scaleType="centerCrop"
+                android:src="@drawable/recipe_default_image"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -41,7 +42,7 @@
 
             <TextView
                 android:id="@+id/recipeDescriptionTextView"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
