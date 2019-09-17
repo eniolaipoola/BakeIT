@@ -4,4 +4,9 @@
     <string name="recipe_name">Recipe Name</string>
     <string name="recipe_description">Recipe Description</string>
 
+    <string name="loading">Loading...</string>
+    <string name="errorMessage">Something went wrong</string>
+    <string name="errorRetry">Retry</string>
+
+
 </resources>
