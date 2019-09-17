@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -20,6 +21,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityMainBinding = DataBindingUtil.setContentView(MainActivity.this, R.layout.activity_main);
+        boolean isPhone = getResources().getBoolean(R.bool.is_phone);
+        if(!isPhone){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
