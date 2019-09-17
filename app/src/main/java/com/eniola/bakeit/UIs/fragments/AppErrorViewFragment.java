@@ -4,11 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
 import com.eniola.bakeit.R;
+import com.eniola.bakeit.databinding.FragmentErrorPageBinding;
 
 public class AppErrorViewFragment extends DialogFragment {
 
@@ -23,19 +24,18 @@ public class AppErrorViewFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_error_page, container, false);
+        FragmentErrorPageBinding fragmentErrorPageBinding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_error_page, container, false);
+        View rootView = fragmentErrorPageBinding.getRoot();
 
         String message = null;
         if (getArguments() != null) {
             message = getArguments().getString("message");
         }
-        TextView messageTextView = rootView.findViewById(R.id.errorMessage);
-        messageTextView.setText(message);
-
-        TextView retryTextView = rootView.findViewById(R.id.retryText);
-        retryTextView.setOnClickListener(new View.OnClickListener() {
+        fragmentErrorPageBinding.errorMessage.setText(message);
+        fragmentErrorPageBinding.retryText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 dismiss();
             }
         });

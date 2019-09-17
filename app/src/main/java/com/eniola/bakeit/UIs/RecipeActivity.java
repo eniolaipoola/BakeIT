@@ -51,7 +51,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
 
         if(appUtility.isInternetAvailable(mContext)){
             recipeData.getRecipes(this);
-            if(findViewById(R.id.loadingViewCard) != null){
+            if(findViewById(R.id.loadingViewCard) == null){
                 showLoadingDialogFragment();
             }
             boolean isPhone = getResources().getBoolean(R.bool.is_phone);
@@ -97,8 +97,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
         DialogFragment dialogFragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
         if(dialogFragment != null){
             dialogFragment.dismiss();
-            getSupportFragmentManager().beginTransaction().
-                    remove(dialogFragment).commit();
         }
     }
 
