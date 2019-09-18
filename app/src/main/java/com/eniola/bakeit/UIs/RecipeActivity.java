@@ -1,6 +1,7 @@
 package com.eniola.bakeit.UIs;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.eniola.bakeit.R;
+import com.eniola.bakeit.UIs.adapters.RecipeAdapter;
 import com.eniola.bakeit.UIs.fragments.AppErrorViewFragment;
 import com.eniola.bakeit.UIs.fragments.AppLoadingViewFragment;
 import com.eniola.bakeit.data.APIClient;
@@ -20,7 +22,6 @@ import com.eniola.bakeit.data.RecipeDataInterface;
 import com.eniola.bakeit.databinding.ActivityRecipeBinding;
 import com.eniola.bakeit.models.OnRecipeSelectedListener;
 import com.eniola.bakeit.models.RecipeDescription;
-import com.eniola.bakeit.models.RecipeIngredient;
 import com.eniola.bakeit.models.RecipeModel;
 import com.eniola.bakeit.utilities.APPConstant;
 import com.eniola.bakeit.utilities.APPUtility;
@@ -88,8 +89,12 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
 
     @Override
     public void onRecipeSelected(RecipeModel recipeModel) {
-        List<RecipeIngredient> recipeIngredients = recipeModel.getRecipeIngredientList();
         List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
+
+        Intent intent = new Intent(mContext, RecipeInformationActivity.class);
+        intent.putExtra("RECIPE", recipeModel);
+        mContext.startActivity(intent);
+
     }
 
     //View Utility methods

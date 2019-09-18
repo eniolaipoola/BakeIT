@@ -3,7 +3,9 @@ package com.eniola.bakeit.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RecipeIngredient {
+import java.io.Serializable;
+
+public class RecipeIngredient implements Serializable {
 
 
     @SerializedName("quantity")
