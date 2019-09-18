@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".UIs.RecipeDescriptionActivity">
+
+        <ImageView
+            android:id="@+id/recipeImageView"
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:adjustViewBounds="true"
+            tools:ignore="ContentDescription"
+            android:scaleType="centerCrop"
+            android:src="@drawable/recipe_default_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/recipeInstructionTextView"
+            android:layout_height="300dp"
+            android:layout_width="match_parent"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:typeface="serif"
+            android:text="@string/recipe_name"
+            app:layout_constraintTop_toBottomOf="@+id/recipeImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAllCaps="true" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/navigation_prev_step"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_arrow_left_24"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recipeInstructionTextView"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/navigation_next_step"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_arrow_right_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recipeInstructionTextView"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

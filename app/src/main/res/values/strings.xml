@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">BakeIT</string>
+    <string name="baking_time">Baking Time</string>
 
     <string name="recipe_name">Recipe Name</string>
     <string name="recipe_description">Recipe Description</string>
@@ -13,6 +14,7 @@
     <string name="quantity">Quantity:</string>
     <string name="measure">Measure:</string>
     <string name="ingredient">Ingredient:</string>
+    <string name="servings">Servings:</string>
 
     <string name="step_number">1</string>
     <string name="short_description">Short Description</string>

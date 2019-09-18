@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
@@ -21,7 +22,6 @@ import com.eniola.bakeit.data.RecipeData;
 import com.eniola.bakeit.data.RecipeDataInterface;
 import com.eniola.bakeit.databinding.ActivityRecipeBinding;
 import com.eniola.bakeit.models.OnRecipeSelectedListener;
-import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeModel;
 import com.eniola.bakeit.utilities.APPConstant;
 import com.eniola.bakeit.utilities.APPUtility;
@@ -49,6 +49,12 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
         apiClient = new APIClient();
         apiService = apiClient.getRetrofit(APPConstant.BASE_URL).create(APIService.class);
         recipeData = new RecipeData(apiService);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        setTitle(R.string.baking_time);
 
         if(appUtility.isInternetAvailable(mContext)){
             recipeData.getRecipes(this);
@@ -89,19 +95,17 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
 
     @Override
     public void onRecipeSelected(RecipeModel recipeModel) {
-        List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
-
         Intent intent = new Intent(mContext, RecipeInformationActivity.class);
         intent.putExtra("RECIPE", recipeModel);
         mContext.startActivity(intent);
-
     }
 
     //View Utility methods
     private void removeDialogFragment(String fragmentTag) {
         DialogFragment dialogFragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
         if(dialogFragment != null){
-            dialogFragment.dismiss();
+            getSupportFragmentManager().beginTransaction().
+                    remove(dialogFragment).commit();
         }
     }
 

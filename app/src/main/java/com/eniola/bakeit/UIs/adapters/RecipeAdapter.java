@@ -53,6 +53,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         private void bindDataToView(final RecipeModel recipeModel,
                                    final OnRecipeSelectedListener recipeSelectedListener){
             String recipeName = recipeModel.getName();
+            String recipeServings = recipeModel.getServings();
             itemRecipeBinding.recipeNameTextView.setText(recipeName);
             itemRecipeBinding.recipeImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
