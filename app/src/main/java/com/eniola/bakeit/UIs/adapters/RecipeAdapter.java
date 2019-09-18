@@ -1,11 +1,10 @@
-package com.eniola.bakeit.UIs;
+package com.eniola.bakeit.UIs.adapters;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eniola.bakeit.databinding.ItemRecipeBinding;
 import com.eniola.bakeit.models.OnRecipeSelectedListener;
 import com.eniola.bakeit.models.RecipeModel;
@@ -52,11 +51,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
 
         private void bindDataToView(final RecipeModel recipeModel,
-                                   OnRecipeSelectedListener recipeSelectedListener){
+                                   final OnRecipeSelectedListener recipeSelectedListener){
             String recipeName = recipeModel.getName();
             itemRecipeBinding.recipeNameTextView.setText(recipeName);
-
-            recipeSelectedListener.onRecipeSelected(recipeModel);
+            itemRecipeBinding.recipeImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    recipeSelectedListener.onRecipeSelected(recipeModel);
+                }
+            });
         }
     }
 }
