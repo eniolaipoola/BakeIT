@@ -3,7 +3,6 @@ package com.eniola.bakeit.UIs;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -16,7 +15,6 @@ import com.eniola.bakeit.models.OnRecipeStepInstructionClickedListener;
 import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeIngredient;
 import com.eniola.bakeit.models.RecipeModel;
-
 import java.util.List;
 
 public class RecipeInformationActivity extends AppCompatActivity implements OnRecipeStepInstructionClickedListener {
@@ -25,6 +23,8 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
     private RecipeStepAdapter recipeStepAdapter;
     ActivityRecipeInformationBinding recipeInformationBinding;
     String recipeName;
+    List<RecipeDescription> recipeDescriptions;
+    RecipeModel recipeModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
     public void getRecipeIngredient(){
         Intent intent = getIntent();
         if(intent != null){
-            RecipeModel recipeModel = (RecipeModel) intent.getSerializableExtra("RECIPE");
+            recipeModel = (RecipeModel) intent.getSerializableExtra("RECIPE");
             if(recipeModel != null){
                 recipeName = recipeModel.getName();
                 List<RecipeIngredient> recipeIngredients = recipeModel.getRecipeIngredientList();
@@ -62,7 +62,7 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
                 recipeInformationBinding.ingredientRecyclerView.setAdapter(recipeIngredientAdapter);
                 recipeIngredientAdapter.notifyDataSetChanged();
 
-                List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
+                recipeDescriptions = recipeModel.getRecipeDescriptionList();
                 recipeStepAdapter = new RecipeStepAdapter(recipeDescriptions, this);
                 recipeInformationBinding.descriptionRecyclerView.setAdapter(recipeStepAdapter);
                 recipeStepAdapter.notifyDataSetChanged();
@@ -74,6 +74,7 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
     public void onRecipeStepInstructionClicked(RecipeDescription recipeDescription) {
         Intent intent = new Intent(this, RecipeDescriptionActivity.class);
         intent.putExtra("RECIPE_DESCRIPTION", recipeDescription);
+        intent.putExtra("RECIPE_MODEL", recipeModel);
         this.startActivity(intent);
     }
 

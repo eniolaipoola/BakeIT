@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 public class RecipeDescription implements Serializable {
 
-
     @SerializedName("id")
     @Expose
     private int id;
