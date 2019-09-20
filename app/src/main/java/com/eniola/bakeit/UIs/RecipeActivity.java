@@ -1,5 +1,6 @@
 package com.eniola.bakeit.UIs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -10,6 +11,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.eniola.bakeit.R;
@@ -110,8 +114,15 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
     }
 
     private void showLoadingDialogFragment(){
-        AppLoadingViewFragment.newInstance("Loading").show(getSupportFragmentManager().beginTransaction(),
-                AppLoadingViewFragment.class.getName());
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment previousFragment = getSupportFragmentManager().findFragmentByTag(AppLoadingViewFragment.class.getName());
+        if(previousFragment != null){
+            fragmentTransaction.remove(previousFragment);
+        }
+        fragmentTransaction.addToBackStack(null);
+        DialogFragment appLoadingViewFragment =
+                AppLoadingViewFragment.newInstance("Loading");
+        appLoadingViewFragment.show(fragmentTransaction, AppLoadingViewFragment.class.getName());
     }
 
     private void showErrorDialogFragment(String errorMessage){

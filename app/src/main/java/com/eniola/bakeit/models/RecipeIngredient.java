@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 public class RecipeIngredient implements Serializable {
 
-
     @SerializedName("quantity")
     @Expose
     private String quantity;
