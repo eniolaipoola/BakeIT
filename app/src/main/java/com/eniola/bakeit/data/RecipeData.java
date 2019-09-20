@@ -1,10 +1,10 @@
-package com.eniola.bakeit.data.networking;
-
-import android.util.Log;
+package com.eniola.bakeit.data;
 
 import androidx.annotation.NonNull;
 
-import com.eniola.bakeit.data.models.RecipeModel;
+import com.eniola.bakeit.models.RecipeModel;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,29 +22,25 @@ public class RecipeData implements RecipeDataInterface{
 
     @Override
     public void getRecipes(final OnRecipeFetchedListener recipeFetchedListener) {
-        apiService.getAllRecipes().enqueue(new Callback<RecipeModel>() {
+        apiService.getAllRecipes().enqueue(new Callback<List<RecipeModel>>() {
             @Override
-            public void onResponse(@NonNull Call<RecipeModel> call, @NonNull Response<RecipeModel> response) {
+            public void onResponse(@NonNull Call<List<RecipeModel>> call, @NonNull Response<List<RecipeModel>> response) {
                 if(response.isSuccessful()){
                     if(response.body() != null){
-                        RecipeModel recipeModel = response.body();
-                        Log.d("debug", "each recipe is" + recipeModel.getName());
-                        Log.d("debug", "each recipe is" + recipeModel.getImage());
+                        List<RecipeModel> recipeModel = response.body();
                         recipeFetchedListener.onRecipeSuccessful(recipeModel);
 
                     } else {
-                        Log.d("debug", "recipe body is null" + response.message());
                         recipeFetchedListener.onRecipeFailed("No recipe was found");
                     }
 
                 } else {
-                    Log.d("debug", "recipe  api call fails/ is not successful " + response.message());
                     recipeFetchedListener.onRecipeFailed("Recipes couldn't be fetched");
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<RecipeModel> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<RecipeModel>> call, @NonNull Throwable t) {
                 recipeFetchedListener.onRecipeFailed("A fatal error occurred");
             }
         });

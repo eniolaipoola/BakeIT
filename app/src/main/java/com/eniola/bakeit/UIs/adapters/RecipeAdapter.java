@@ -1,26 +1,25 @@
-package com.eniola.bakeit.UIs;
+package com.eniola.bakeit.UIs.adapters;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.eniola.bakeit.data.models.RecipeModel;
-import com.eniola.bakeit.data.networking.RecipeDataInterface;
 import com.eniola.bakeit.databinding.ItemRecipeBinding;
+import com.eniola.bakeit.models.OnRecipeSelectedListener;
+import com.eniola.bakeit.models.RecipeModel;
 
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>  {
 
-    private RecipeDataInterface.OnRecipeFetchedListener recipeFetchedListener;
+    private OnRecipeSelectedListener recipeSelectedListener;
     private List<RecipeModel> recipeModelList;
 
     public RecipeAdapter(List<RecipeModel> recipeModel,
-                         RecipeDataInterface.OnRecipeFetchedListener recipeFetchedListener){
+                         OnRecipeSelectedListener recipeSelectedListener){
         this.recipeModelList = recipeModel;
-        this.recipeFetchedListener = recipeFetchedListener;
+        this.recipeSelectedListener = recipeSelectedListener;
     }
 
     @NonNull
@@ -34,12 +33,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         final RecipeModel recipe = recipeModelList.get(position);
-        holder.bindDataToView(recipe, recipeFetchedListener);
+        holder.bindDataToView(recipe, recipeSelectedListener);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return recipeModelList.size();
     }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
@@ -52,10 +51,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
 
         private void bindDataToView(final RecipeModel recipeModel,
-                                   RecipeDataInterface.OnRecipeFetchedListener recipeFetchedListener){
+                                   final OnRecipeSelectedListener recipeSelectedListener){
             String recipeName = recipeModel.getName();
+            String recipeServings = recipeModel.getServings();
             itemRecipeBinding.recipeNameTextView.setText(recipeName);
-
+            itemRecipeBinding.recipeImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    recipeSelectedListener.onRecipeSelected(recipeModel);
+                }
+            });
         }
     }
 }

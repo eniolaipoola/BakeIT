@@ -12,14 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".UIs.RecipeDescriptionActivity"></activity>
+        <activity android:name=".UIs.RecipeInformationActivity" />
         <activity android:name=".UIs.RecipeActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
-
         </activity>
-
-        <activity android:name=".UIs.MainActivity">
+        <activity
+            android:name=".UIs.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
