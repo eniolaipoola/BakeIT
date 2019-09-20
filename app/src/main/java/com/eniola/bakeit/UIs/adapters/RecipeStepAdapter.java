@@ -1,12 +1,14 @@
 package com.eniola.bakeit.UIs.adapters;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eniola.bakeit.databinding.ItemRecipeStepBinding;
+import com.eniola.bakeit.models.OnRecipeStepInstructionClickedListener;
 import com.eniola.bakeit.models.RecipeDescription;
 
 import java.util.List;
@@ -14,9 +16,12 @@ import java.util.List;
 public class RecipeStepAdapter  extends RecyclerView.Adapter<RecipeStepAdapter.RecipeStepViewHolder> {
 
     List<RecipeDescription> recipeDescriptionList;
+    private OnRecipeStepInstructionClickedListener stepInstructionClickedListener;
 
-    public RecipeStepAdapter(List<RecipeDescription> recipeDescriptions){
+    public RecipeStepAdapter(List<RecipeDescription> recipeDescriptions, OnRecipeStepInstructionClickedListener
+                             recipeStepInstructionClickedListener){
         this.recipeDescriptionList = recipeDescriptions;
+        this.stepInstructionClickedListener = recipeStepInstructionClickedListener;
     }
 
     @NonNull
@@ -31,7 +36,7 @@ public class RecipeStepAdapter  extends RecyclerView.Adapter<RecipeStepAdapter.R
     @Override
     public void onBindViewHolder(@NonNull RecipeStepViewHolder holder, int position) {
         final RecipeDescription recipeDescription = recipeDescriptionList.get(position);
-        holder.bindDescriptionTOView(recipeDescription);
+        holder.bindDescriptionTOView(recipeDescription, stepInstructionClickedListener);
     }
 
     @Override
@@ -49,9 +54,16 @@ public class RecipeStepAdapter  extends RecyclerView.Adapter<RecipeStepAdapter.R
 
         }
 
-        private void bindDescriptionTOView(final RecipeDescription recipeDescription){
+        private void bindDescriptionTOView(final RecipeDescription recipeDescription,
+                                           final OnRecipeStepInstructionClickedListener stepInstructionClickedListener){
             itemRecipeStepBinding.stepNumberTextView.setText(String.valueOf(recipeDescription.getId()));
             itemRecipeStepBinding.recipeShortDescriptionTextView.setText(recipeDescription.getShortDescription());
+            itemRecipeStepBinding.recipeShortDescriptionTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    stepInstructionClickedListener.onRecipeStepInstructionClicked(recipeDescription);
+                }
+            });
         }
     }
 }

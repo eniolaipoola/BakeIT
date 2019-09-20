@@ -1,27 +1,30 @@
 package com.eniola.bakeit.UIs;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-
 import com.eniola.bakeit.R;
 import com.eniola.bakeit.UIs.adapters.RecipeIngredientAdapter;
 import com.eniola.bakeit.UIs.adapters.RecipeStepAdapter;
 import com.eniola.bakeit.databinding.ActivityRecipeInformationBinding;
+import com.eniola.bakeit.models.OnRecipeStepInstructionClickedListener;
 import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeIngredient;
 import com.eniola.bakeit.models.RecipeModel;
-
 import java.util.List;
 
-public class RecipeInformationActivity extends AppCompatActivity {
+public class RecipeInformationActivity extends AppCompatActivity implements OnRecipeStepInstructionClickedListener {
+
     private RecipeIngredientAdapter recipeIngredientAdapter;
     private RecipeStepAdapter recipeStepAdapter;
     ActivityRecipeInformationBinding recipeInformationBinding;
+    String recipeName;
+    List<RecipeDescription> recipeDescriptions;
+    RecipeModel recipeModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +32,14 @@ public class RecipeInformationActivity extends AppCompatActivity {
 
         recipeInformationBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_information);
         recipeInformationBinding.getRoot();
+
         getRecipeIngredient();
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        setTitle(recipeName);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL,
                 false);
         recipeInformationBinding.ingredientRecyclerView.setLayoutManager(gridLayoutManager);
@@ -44,20 +54,37 @@ public class RecipeInformationActivity extends AppCompatActivity {
     public void getRecipeIngredient(){
         Intent intent = getIntent();
         if(intent != null){
-            RecipeModel recipeModel = (RecipeModel) intent.getSerializableExtra("RECIPE");
+            recipeModel = (RecipeModel) intent.getSerializableExtra("RECIPE");
             if(recipeModel != null){
+                recipeName = recipeModel.getName();
                 List<RecipeIngredient> recipeIngredients = recipeModel.getRecipeIngredientList();
-                Log.d("debug", recipeModel.getName()+ "recipe name" );
-                Log.d("debug", recipeIngredients.size() + "recipe ingredient size is" );
                 recipeIngredientAdapter = new RecipeIngredientAdapter(recipeIngredients);
                 recipeInformationBinding.ingredientRecyclerView.setAdapter(recipeIngredientAdapter);
                 recipeIngredientAdapter.notifyDataSetChanged();
 
-                List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
-                recipeStepAdapter = new RecipeStepAdapter(recipeDescriptions);
+                recipeDescriptions = recipeModel.getRecipeDescriptionList();
+                recipeStepAdapter = new RecipeStepAdapter(recipeDescriptions, this);
                 recipeInformationBinding.descriptionRecyclerView.setAdapter(recipeStepAdapter);
                 recipeStepAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    @Override
+    public void onRecipeStepInstructionClicked(RecipeDescription recipeDescription) {
+        Intent intent = new Intent(this, RecipeDescriptionActivity.class);
+        intent.putExtra("RECIPE_DESCRIPTION", recipeDescription);
+        intent.putExtra("RECIPE_MODEL", recipeModel);
+        this.startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemSelected = item.getItemId();
+        if (itemSelected == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

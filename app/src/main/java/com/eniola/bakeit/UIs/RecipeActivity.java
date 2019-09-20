@@ -1,14 +1,19 @@
 package com.eniola.bakeit.UIs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.eniola.bakeit.R;
@@ -21,7 +26,6 @@ import com.eniola.bakeit.data.RecipeData;
 import com.eniola.bakeit.data.RecipeDataInterface;
 import com.eniola.bakeit.databinding.ActivityRecipeBinding;
 import com.eniola.bakeit.models.OnRecipeSelectedListener;
-import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeModel;
 import com.eniola.bakeit.utilities.APPConstant;
 import com.eniola.bakeit.utilities.APPUtility;
@@ -49,6 +53,12 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
         apiClient = new APIClient();
         apiService = apiClient.getRetrofit(APPConstant.BASE_URL).create(APIService.class);
         recipeData = new RecipeData(apiService);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        setTitle(R.string.baking_time);
 
         if(appUtility.isInternetAvailable(mContext)){
             recipeData.getRecipes(this);
@@ -89,25 +99,30 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
 
     @Override
     public void onRecipeSelected(RecipeModel recipeModel) {
-        List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
-
         Intent intent = new Intent(mContext, RecipeInformationActivity.class);
         intent.putExtra("RECIPE", recipeModel);
         mContext.startActivity(intent);
-
     }
 
     //View Utility methods
     private void removeDialogFragment(String fragmentTag) {
         DialogFragment dialogFragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
         if(dialogFragment != null){
-            dialogFragment.dismiss();
+            getSupportFragmentManager().beginTransaction().
+                    remove(dialogFragment).commit();
         }
     }
 
     private void showLoadingDialogFragment(){
-        AppLoadingViewFragment.newInstance("Loading").show(getSupportFragmentManager().beginTransaction(),
-                AppLoadingViewFragment.class.getName());
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment previousFragment = getSupportFragmentManager().findFragmentByTag(AppLoadingViewFragment.class.getName());
+        if(previousFragment != null){
+            fragmentTransaction.remove(previousFragment);
+        }
+        fragmentTransaction.addToBackStack(null);
+        DialogFragment appLoadingViewFragment =
+                AppLoadingViewFragment.newInstance("Loading");
+        appLoadingViewFragment.show(fragmentTransaction, AppLoadingViewFragment.class.getName());
     }
 
     private void showErrorDialogFragment(String errorMessage){
