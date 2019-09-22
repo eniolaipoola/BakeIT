@@ -1,21 +1,17 @@
 package com.eniola.bakeit.UIs;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
-
 import com.eniola.bakeit.R;
 import com.eniola.bakeit.UIs.adapters.RecipeAdapter;
 import com.eniola.bakeit.UIs.fragments.AppErrorViewFragment;
@@ -42,6 +38,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
     APIClient apiClient;
     RecipeData recipeData;
     private RecipeAdapter recipeAdapter;
+    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +50,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
         apiClient = new APIClient();
         apiService = apiClient.getRetrofit(APPConstant.BASE_URL).create(APIService.class);
         recipeData = new RecipeData(apiService);
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -114,10 +112,9 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
     }
 
     private void showLoadingDialogFragment(){
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        Fragment previousFragment = getSupportFragmentManager().findFragmentByTag(AppLoadingViewFragment.class.getName());
-        if(previousFragment != null){
-            fragmentTransaction.remove(previousFragment);
+        Fragment loadingFragment = getSupportFragmentManager().findFragmentByTag(AppLoadingViewFragment.class.getName());
+        if(loadingFragment != null){
+            fragmentTransaction.remove(loadingFragment);
         }
         fragmentTransaction.addToBackStack(null);
         DialogFragment appLoadingViewFragment =
@@ -126,8 +123,12 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
     }
 
     private void showErrorDialogFragment(String errorMessage){
-        AppErrorViewFragment.newInstance(errorMessage).show(getSupportFragmentManager().beginTransaction(),
+        Fragment errorFragment = getSupportFragmentManager().findFragmentByTag(AppErrorViewFragment.class.getName());
+        if(errorFragment != null){
+            fragmentTransaction.remove(errorFragment);
+        }
+        fragmentTransaction.addToBackStack(null);
+        AppErrorViewFragment.newInstance(errorMessage).show(fragmentTransaction,
                 AppErrorViewFragment.class.getName());
-        getSupportFragmentManager().beginTransaction().show(AppLoadingViewFragment.newInstance(errorMessage));
     }
 }

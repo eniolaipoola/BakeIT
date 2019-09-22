@@ -18,7 +18,6 @@
             android:adjustViewBounds="true"
             tools:ignore="ContentDescription"
             android:scaleType="centerCrop"
-            android:src="@drawable/recipe_default_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -29,13 +28,14 @@
             android:textSize="20sp"
             android:gravity="center"
             android:typeface="serif"
+            android:paddingBottom="8dp"
             android:text="@string/recipe_name"
             app:layout_constraintTop_toBottomOf="@+id/recipeImageView"
             app:layout_constraintStart_toStartOf="parent"
             android:textAllCaps="true" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/navigation_prev_step"
+            android:id="@+id/prevStep"
             android:layout_height="50dp"
             android:layout_width="50dp"
             android:layout_marginBottom="16dp"
@@ -46,7 +46,7 @@
             app:layout_constraintTop_toBottomOf="@+id/recipeInstructionTextView"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/navigation_next_step"
+            android:id="@+id/nextStep"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"

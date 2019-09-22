@@ -2,7 +2,6 @@ package com.eniola.bakeit.UIs;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -39,31 +38,27 @@ public class RecipeDescriptionActivity extends AppCompatActivity {
         if(recipeDescription != null){
             currentStepId = recipeDescription.getId();
             recipeDescriptionBinding.recipeInstructionTextView.setText(recipeDescription.getDescription());
-            recipeDescriptionBinding.navigationPrevStep.setOnClickListener(new View.OnClickListener() {
+            recipeDescriptionBinding.nextStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("debug", "current step is " + currentStepId );
-                    currentStepId = currentStepId++;
-                    getCurrentStenInstructions(currentStepId);
-                    Log.d("debug", "current step is " + currentStepId);
+                    currentStepId = currentStepId + 1;
+                    getCurrentStepInstructions(currentStepId);
+
                 }
             });
 
-            recipeDescriptionBinding.navigationNextStep.setOnClickListener(new View.OnClickListener() {
+            recipeDescriptionBinding.prevStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("debug", "current step is " + currentStepId );
-                    currentStepId = currentStepId--;
-                    getCurrentStenInstructions(currentStepId);
-                    Log.d("debug", "current step is " + currentStepId );
+                    currentStepId = currentStepId - 1;
+                    getCurrentStepInstructions(currentStepId);
                 }
             });
         }
     }
 
-    public void getCurrentStenInstructions(int currentStepId){
-        int nextStepId = currentStepId + 1;
+    public void getCurrentStepInstructions(int currentStepId){
         List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
-        recipeDescriptionBinding.recipeInstructionTextView.setText(recipeDescriptions.get(nextStepId).getDescription());
+        recipeDescriptionBinding.recipeInstructionTextView.setText(recipeDescriptions.get(currentStepId).getDescription());
     }
 }
