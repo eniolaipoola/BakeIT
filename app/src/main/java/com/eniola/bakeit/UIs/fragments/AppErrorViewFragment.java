@@ -13,6 +13,8 @@ import com.eniola.bakeit.databinding.FragmentErrorPageBinding;
 
 public class AppErrorViewFragment extends DialogFragment {
 
+    public AppErrorViewFragment(){}
+
     public static AppErrorViewFragment newInstance(String errorMessage) {
         AppErrorViewFragment fragment = new AppErrorViewFragment();
         Bundle args = new Bundle();

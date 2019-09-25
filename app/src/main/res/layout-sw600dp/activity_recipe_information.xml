@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false">
+
+    <fragment
+        android:id="@+id/fragment_ingredient"
+        android:name="com.eniola.bakeit.UIs.fragments.RecipeInformationFragment"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"/>
+
+    <fragment
+        android:id="@+id/fragment_step_description"
+        android:name="com.eniola.bakeit.UIs.fragments.RecipeInformationDescriptionFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

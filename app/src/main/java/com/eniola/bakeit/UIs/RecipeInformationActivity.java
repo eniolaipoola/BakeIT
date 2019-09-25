@@ -1,15 +1,19 @@
 package com.eniola.bakeit.UIs;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import com.eniola.bakeit.R;
 import com.eniola.bakeit.UIs.adapters.RecipeIngredientAdapter;
 import com.eniola.bakeit.UIs.adapters.RecipeStepAdapter;
+import com.eniola.bakeit.UIs.fragments.RecipeInformationDescriptionFragment;
+import com.eniola.bakeit.UIs.fragments.RecipeInformationFragment;
 import com.eniola.bakeit.databinding.ActivityRecipeInformationBinding;
 import com.eniola.bakeit.models.OnRecipeStepInstructionClickedListener;
 import com.eniola.bakeit.models.RecipeDescription;
@@ -17,7 +21,8 @@ import com.eniola.bakeit.models.RecipeIngredient;
 import com.eniola.bakeit.models.RecipeModel;
 import java.util.List;
 
-public class RecipeInformationActivity extends AppCompatActivity implements OnRecipeStepInstructionClickedListener {
+public class RecipeInformationActivity extends AppCompatActivity implements OnRecipeStepInstructionClickedListener,
+        RecipeInformationFragment.OnRecipeStepClickedListener {
 
     private RecipeIngredientAdapter recipeIngredientAdapter;
     private RecipeStepAdapter recipeStepAdapter;
@@ -25,11 +30,11 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
     String recipeName;
     List<RecipeDescription> recipeDescriptions;
     RecipeModel recipeModel;
+    GridLayoutManager gridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         recipeInformationBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_information);
         recipeInformationBinding.getRoot();
 
@@ -40,15 +45,31 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
         }
         setTitle(recipeName);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL,
-                false);
-        recipeInformationBinding.ingredientRecyclerView.setLayoutManager(gridLayoutManager);
-        recipeInformationBinding.ingredientRecyclerView.setHasFixedSize(true);
+        boolean isPhone = getResources().getBoolean(R.bool.is_phone);
 
-        GridLayoutManager descriptionLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL,
-                false);
-        recipeInformationBinding.descriptionRecyclerView.setLayoutManager(descriptionLayoutManager);
-        recipeInformationBinding.descriptionRecyclerView.setHasFixedSize(true);
+        if(isPhone){
+            gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL,
+                    false);
+            recipeInformationBinding.ingredientRecyclerView.setLayoutManager(gridLayoutManager);
+            recipeInformationBinding.ingredientRecyclerView.setHasFixedSize(true);
+
+
+            GridLayoutManager descriptionLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL,
+                    false);
+            recipeInformationBinding.descriptionRecyclerView.setLayoutManager(descriptionLayoutManager);
+            recipeInformationBinding.descriptionRecyclerView.setHasFixedSize(true);
+
+        } else {
+            if(savedInstanceState != null){
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                RecipeInformationFragment informationFragment = new RecipeInformationFragment();
+                fragmentTransaction.add(R.id.fragment_ingredient, informationFragment).commit();
+
+                RecipeInformationDescriptionFragment descriptionFragment = new RecipeInformationDescriptionFragment();
+                fragmentTransaction.add(R.id.fragment_step_description, descriptionFragment).commit();
+            }
+        }
     }
 
     public void getRecipeIngredient(){
@@ -72,7 +93,7 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
 
     @Override
     public void onRecipeStepInstructionClicked(RecipeDescription recipeDescription) {
-        Intent intent = new Intent(this, RecipeDescriptionActivity.class);
+        Intent intent = new Intent(this, RecipeInformationDescription.class);
         intent.putExtra("RECIPE_DESCRIPTION", recipeDescription);
         intent.putExtra("RECIPE_MODEL", recipeModel);
         this.startActivity(intent);
@@ -86,5 +107,10 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRecipeStepClicked() {
+
     }
 }

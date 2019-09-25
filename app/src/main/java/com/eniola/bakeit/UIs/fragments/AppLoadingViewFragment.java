@@ -13,6 +13,8 @@ import com.eniola.bakeit.databinding.FragmentLoadingViewBinding;
 
 public class AppLoadingViewFragment extends DialogFragment {
 
+    public AppLoadingViewFragment(){}
+
     public static AppLoadingViewFragment newInstance(String progressMessage) {
         AppLoadingViewFragment fragment = new AppLoadingViewFragment();
         Bundle args = new Bundle();

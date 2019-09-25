@@ -19,5 +19,7 @@
     <string name="step_number">1</string>
     <string name="short_description">Short Description</string>
 
+    <string name="blank_fragment">Hello blank fragment</string>
+
 
 </resources>

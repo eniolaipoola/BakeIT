@@ -39,6 +39,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
     RecipeData recipeData;
     private RecipeAdapter recipeAdapter;
     FragmentTransaction fragmentTransaction;
+    GridLayoutManager gridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,10 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
         apiClient = new APIClient();
         apiService = apiClient.getRetrofit(APPConstant.BASE_URL).create(APIService.class);
         recipeData = new RecipeData(apiService);
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        if(savedInstanceState == null){
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        }
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -64,7 +68,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
                 showLoadingDialogFragment();
             }
             boolean isPhone = getResources().getBoolean(R.bool.is_phone);
-            GridLayoutManager gridLayoutManager;
             if(isPhone){
                 gridLayoutManager = new GridLayoutManager(this,
                         1, GridLayoutManager.VERTICAL, false);

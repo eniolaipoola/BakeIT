@@ -12,7 +12,7 @@ import com.eniola.bakeit.models.RecipeModel;
 
 import java.util.List;
 
-public class RecipeDescriptionActivity extends AppCompatActivity {
+public class RecipeInformationDescription extends AppCompatActivity {
 
     ActivityRecipeDescriptionBinding recipeDescriptionBinding;
     int currentStepId;
