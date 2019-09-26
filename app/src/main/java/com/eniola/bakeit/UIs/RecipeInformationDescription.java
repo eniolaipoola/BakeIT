@@ -2,23 +2,24 @@ package com.eniola.bakeit.UIs;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import com.eniola.bakeit.R;
 import com.eniola.bakeit.databinding.ActivityRecipeDescriptionBinding;
 import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeModel;
-
 import java.util.List;
 
-public class RecipeDescriptionActivity extends AppCompatActivity {
+public class RecipeInformationDescription extends AppCompatActivity {
 
     ActivityRecipeDescriptionBinding recipeDescriptionBinding;
     int currentStepId;
     RecipeDescription recipeDescription;
     RecipeModel recipeModel;
+    String recipeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,39 +32,55 @@ public class RecipeDescriptionActivity extends AppCompatActivity {
             recipeDescription =
                     (RecipeDescription) intent.getSerializableExtra("RECIPE_DESCRIPTION");
             recipeModel = (RecipeModel) intent.getSerializableExtra("RECIPE_MODEL");
+            recipeName = recipeModel.getName();
         }
+
         getRecipeInstruction();
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        setTitle(recipeName);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemSelected = item.getItemId();
+        if (itemSelected == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void getRecipeInstruction(){
         if(recipeDescription != null){
             currentStepId = recipeDescription.getId();
             recipeDescriptionBinding.recipeInstructionTextView.setText(recipeDescription.getDescription());
-            recipeDescriptionBinding.navigationPrevStep.setOnClickListener(new View.OnClickListener() {
+            recipeDescriptionBinding.nextStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("debug", "current step is " + currentStepId );
-                    currentStepId = currentStepId++;
-                    getCurrentStenInstructions(currentStepId);
-                    Log.d("debug", "current step is " + currentStepId);
+                    currentStepId = currentStepId + 1;
+                    getCurrentStepInstructions(currentStepId);
+
                 }
             });
 
-            recipeDescriptionBinding.navigationNextStep.setOnClickListener(new View.OnClickListener() {
+            recipeDescriptionBinding.prevStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("debug", "current step is " + currentStepId );
-                    currentStepId = currentStepId--;
-                    getCurrentStenInstructions(currentStepId);
-                    Log.d("debug", "current step is " + currentStepId );
+                    currentStepId = currentStepId - 1;
+                    getCurrentStepInstructions(currentStepId);
                 }
             });
         }
     }
 
-    public void getCurrentStenInstructions(int currentStepId){
-        int nextStepId = currentStepId + 1;
+    public void getCurrentStepInstructions(int currentStepId){
         List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
-        recipeDescriptionBinding.recipeInstructionTextView.setText(recipeDescriptions.get(nextStepId).getDescription());
+        int recipeDescriptionSize = recipeDescriptions.size();
+        if(currentStepId < recipeDescriptionSize){
+            recipeDescriptionBinding.recipeInstructionTextView.setText(recipeDescriptions.get(currentStepId).getDescription());
+        }
     }
 }

@@ -12,7 +12,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:background="@color/colorPrimaryDark"
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/ingredientTextView"
@@ -20,6 +21,7 @@
                 android:layout_width="wrap_content"
                 android:textSize="20sp"
                 android:layout_margin="16dp"
+                android:textColor="#ffffff"
                 android:typeface="serif"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -32,6 +34,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:textSize="20sp"
+                android:textColor="#ffffff"
                 android:typeface="serif"
                 android:text="@string/quantity"
                 app:layout_constraintTop_toBottomOf="@id/ingredientTextView"
@@ -43,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
+                android:textColor="#ffffff"
                 android:textSize="20sp"
                 android:typeface="serif"
                 app:layout_constraintTop_toBottomOf="@id/ingredientTextView"
@@ -56,6 +60,7 @@
                 android:layout_marginStart="16dp"
                 android:textSize="20sp"
                 android:typeface="serif"
+                android:textColor="#ffffff"
                 android:text="@string/measure"
                 app:layout_constraintTop_toBottomOf="@+id/recipeQuantityTextView"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -67,6 +72,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 android:textSize="20sp"
+                android:textColor="#ffffff"
                 android:typeface="serif"
                 app:layout_constraintTop_toBottomOf="@+id/recipeQuantityValue"
                 app:layout_constraintStart_toEndOf="@+id/recipeMeasureTextView" />
