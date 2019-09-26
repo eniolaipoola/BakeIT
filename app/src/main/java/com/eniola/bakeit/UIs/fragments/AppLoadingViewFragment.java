@@ -1,5 +1,6 @@
 package com.eniola.bakeit.UIs.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,5 +43,10 @@ public class AppLoadingViewFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
     }
 }

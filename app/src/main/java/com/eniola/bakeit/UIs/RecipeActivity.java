@@ -51,15 +51,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
         apiClient = new APIClient();
         apiService = apiClient.getRetrofit(APPConstant.BASE_URL).create(APIService.class);
         recipeData = new RecipeData(apiService);
-
-        if(savedInstanceState == null){
-            fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        }
-
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         setTitle(R.string.baking_time);
 
         if(appUtility.isInternetAvailable(mContext)){

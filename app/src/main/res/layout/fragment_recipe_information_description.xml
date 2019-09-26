@@ -19,7 +19,7 @@
                 android:id="@+id/recipeImageView"
                 android:background="@color/colorPrimaryDark"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="400dp"
                 android:adjustViewBounds="true"
                 tools:ignore="ContentDescription"
                 android:scaleType="centerCrop"
@@ -28,7 +28,7 @@
 
             <TextView
                 android:id="@+id/recipeInstructionTextView"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="20sp"
                 android:gravity="center"

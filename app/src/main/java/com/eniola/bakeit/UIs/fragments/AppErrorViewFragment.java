@@ -1,10 +1,13 @@
 package com.eniola.bakeit.UIs.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
@@ -48,5 +51,14 @@ public class AppErrorViewFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Activity activity = getActivity();
+        if(context instanceof Activity){
+            activity = (Activity) context;
+        }
     }
 }
