@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UIs.RecipeDescriptionActivity"></activity>
+        <activity android:name=".UIs.RecipeInformationDescription"></activity>
         <activity android:name=".UIs.RecipeInformationActivity" />
         <activity android:name=".UIs.RecipeActivity">
             <intent-filter>
