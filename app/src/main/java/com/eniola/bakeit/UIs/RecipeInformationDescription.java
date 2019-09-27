@@ -3,17 +3,22 @@ package com.eniola.bakeit.UIs;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
 import com.eniola.bakeit.R;
 import com.eniola.bakeit.databinding.ActivityRecipeDescriptionBinding;
 import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeModel;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -27,7 +32,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import java.util.List;
 
-public class RecipeInformationDescription extends AppCompatActivity {
+public class RecipeInformationDescription extends AppCompatActivity implements ExoPlayer.EventListener {
 
     ActivityRecipeDescriptionBinding recipeDescriptionBinding;
     int currentStepId;
@@ -37,6 +42,10 @@ public class RecipeInformationDescription extends AppCompatActivity {
     private SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView exoPlayerView;
     String recipeVideoUrl;
+    MediaSessionCompat mediaSessionCompat;
+    private static final String TAG = "media_session_tag";
+    PlaybackStateCompat.Builder stateCompatBuilder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,20 @@ public class RecipeInformationDescription extends AppCompatActivity {
 
         recipeDescriptionBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_description);
         recipeDescriptionBinding.getRoot();
+
+        //set up media session
+        mediaSessionCompat = new MediaSessionCompat(this, TAG);
+        mediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        mediaSessionCompat.setMediaButtonReceiver(null);
+        stateCompatBuilder = new PlaybackStateCompat.Builder().setActions(PlaybackStateCompat.ACTION_PLAY |
+                PlaybackStateCompat.ACTION_PLAY_PAUSE | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT);
+        mediaSessionCompat.setPlaybackState(stateCompatBuilder.build());
+        mediaSessionCompat.setCallback(new MediaSessionCallback());
+        mediaSessionCompat.setActive(true);
+
+
+
         Intent intent = getIntent();
         exoPlayerView = (SimpleExoPlayerView) findViewById(R.id.playerView);
         if(intent != null){
@@ -124,7 +147,6 @@ public class RecipeInformationDescription extends AppCompatActivity {
                     new DefaultExtractorsFactory(), null, null);
             exoPlayer.prepare(videoSource);
             exoPlayer.setPlayWhenReady(true);
-
         }
     }
 
@@ -147,5 +169,53 @@ public class RecipeInformationDescription extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         releasePlayer();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mediaSessionCompat.setActive(false);
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if(playbackState == ExoPlayer.STATE_READY && playWhenReady){
+            //We are playing
+            Toast.makeText(this, "We are playing", Toast.LENGTH_LONG).show();
+            stateCompatBuilder.setState(PlaybackStateCompat.STATE_PLAYING, exoPlayer.getContentPosition(), 1f);
+            mediaSessionCompat.setPlaybackState(stateCompatBuilder.build());
+
+        } else if(playbackState == ExoPlayer.STATE_READY) {
+            //We are paused
+            Toast.makeText(this, "We are paused", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class MediaSessionCallback extends MediaSessionCompat.Callback {
+
+        @Override
+        public void onPlay() {
+            super.onPlay();
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            super.onSkipToPrevious();
+        }
+
+        @Override
+        public void onSkipToNext() {
+            super.onSkipToNext();
+        }
+    }
+
+    private void showNotification(PlaybackStateCompat stateCompat){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
     }
 }
