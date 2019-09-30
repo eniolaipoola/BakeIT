@@ -1,5 +1,6 @@
 package com.eniola.bakeit.UIs;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.media.session.MediaButtonReceiver;
 import com.eniola.bakeit.R;
 import com.eniola.bakeit.databinding.ActivityRecipeDescriptionBinding;
 import com.eniola.bakeit.models.RecipeDescription;
@@ -27,6 +29,7 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -40,17 +43,16 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
     RecipeModel recipeModel;
     String recipeName;
     private SimpleExoPlayer exoPlayer;
-    private SimpleExoPlayerView exoPlayerView;
+    private PlayerView exoPlayerView;
     String recipeVideoUrl;
     MediaSessionCompat mediaSessionCompat;
     private static final String TAG = "media_session_tag";
     PlaybackStateCompat.Builder stateCompatBuilder;
-
+    private NotificationManager mNotificationManger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         recipeDescriptionBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_description);
         recipeDescriptionBinding.getRoot();
 
@@ -68,7 +70,7 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
 
 
         Intent intent = getIntent();
-        exoPlayerView = (SimpleExoPlayerView) findViewById(R.id.playerView);
+        exoPlayerView = findViewById(R.id.playerView);
         if(intent != null){
             recipeDescription =
                     (RecipeDescription) intent.getSerializableExtra("RECIPE_DESCRIPTION");
@@ -153,6 +155,7 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
     /** Release media player*/
     private void releasePlayer(){
         if(exoPlayer != null){
+            mNotificationManger.cancelAll();
             exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
@@ -183,13 +186,16 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
         if(playbackState == ExoPlayer.STATE_READY && playWhenReady){
             //We are playing
             Toast.makeText(this, "We are playing", Toast.LENGTH_LONG).show();
-            stateCompatBuilder.setState(PlaybackStateCompat.STATE_PLAYING, exoPlayer.getContentPosition(), 1f);
+            stateCompatBuilder.setState(PlaybackStateCompat.STATE_PLAYING, exoPlayer.getCurrentPosition(), 1f);
             mediaSessionCompat.setPlaybackState(stateCompatBuilder.build());
 
         } else if(playbackState == ExoPlayer.STATE_READY) {
             //We are paused
             Toast.makeText(this, "We are paused", Toast.LENGTH_LONG).show();
+            stateCompatBuilder.setState(PlaybackStateCompat.STATE_PAUSED, exoPlayer.getCurrentPosition(), 1f);
         }
+        mediaSessionCompat.setPlaybackState(stateCompatBuilder.build());
+        showNotification(stateCompatBuilder.build());
     }
 
     private class MediaSessionCallback extends MediaSessionCompat.Callback {
@@ -217,5 +223,36 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
 
     private void showNotification(PlaybackStateCompat stateCompat){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+        int icon;
+        String play_pause;
+        if(stateCompat.getState() == PlaybackStateCompat.STATE_PLAYING){
+            icon = R.drawable.exo_controls_pause;
+            play_pause = getString(R.string.exo_controls_play_description);
+        } else {
+            icon = R.drawable.exo_controls_pause;
+            play_pause = getString(R.string.exo_controls_pause_description);
+        }
+
+        NotificationCompat.Action playPauseAction = new NotificationCompat.Action(icon, play_pause,
+                MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_PLAY_PAUSE));
+
+        NotificationCompat.Action restartAction = new NotificationCompat.Action
+                (R.drawable.exo_icon_previous, getString(R.string.exo_controls_repeat_one_description),
+                        MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS));
+
+        builder.setContentTitle(getString(R.string.ingredient))
+                .setContentText(getString(R.string.app_name))
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .addAction(playPauseAction)
+                .addAction(restartAction)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                .setMediaSession(mediaSessionCompat.getSessionToken())
+                .setShowActionsInCompactView(0,1));
+
+        mNotificationManger = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotificationManger.notify(0, builder.build());
+
+
     }
 }
