@@ -3,7 +3,6 @@ package com.eniola.bakeit.UIs;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +40,6 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
         boolean isPhone = getResources().getBoolean(R.bool.is_phone);
 
         if(isPhone){
-            Log.d("debug", "It came to the phone block of code " );
             recipeInformationBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_information);
             recipeInformationBinding.getRoot();
             getRecipeIngredient();
