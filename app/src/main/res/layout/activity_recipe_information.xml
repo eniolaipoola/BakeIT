@@ -40,14 +40,13 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/ingredientRecyclerView"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_margin="16dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/descriptionTextView"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:layout_margin="16dp"
+                        android:layout_marginTop="16dp"
                         android:textSize="18sp"
                         android:typeface="serif"
                         android:layout_gravity="center"

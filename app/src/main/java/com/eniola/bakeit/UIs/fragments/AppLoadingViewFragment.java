@@ -1,5 +1,6 @@
 package com.eniola.bakeit.UIs.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.eniola.bakeit.R;
 import com.eniola.bakeit.databinding.FragmentLoadingViewBinding;
 
 public class AppLoadingViewFragment extends DialogFragment {
+
+    public AppLoadingViewFragment(){}
 
     public static AppLoadingViewFragment newInstance(String progressMessage) {
         AppLoadingViewFragment fragment = new AppLoadingViewFragment();
@@ -40,5 +43,10 @@ public class AppLoadingViewFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
     }
 }
