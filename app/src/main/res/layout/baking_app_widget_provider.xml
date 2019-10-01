@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/widget_margin"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:id="@+id/appwidget_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/baking_image_3" />
+
+    <TextView
+        android:id="@+id/desiredRecipe"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/appwidget_imageview"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+</RelativeLayout>

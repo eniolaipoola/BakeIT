@@ -123,11 +123,9 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
 
     public void getCurrentStepInstructions(int currentStepId){
         List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
-        recipeVideoUrl = recipeDescriptions.get(currentStepId).getVideoURL();
-        Log.d("debug", "video url from method is " + recipeVideoUrl);
-        Log.d("debug", "current text is " + currentStepId);
         int recipeDescriptionSize = recipeDescriptions.size();
         if(currentStepId < recipeDescriptionSize){
+            recipeVideoUrl = recipeDescriptions.get(currentStepId).getVideoURL();
             releasePlayer();
             initiateMediaPlayer(Uri.parse(recipeVideoUrl));
             recipeDescriptionBinding.recipeInstructionTextView.setText(recipeDescriptions.get(currentStepId).getDescription());
