@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         tools:context=".UIs.RecipeInformationDescription">
 
-        <com.google.android.exoplayer2.ui.PlayerView
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/playerView"
             android:background="@color/colorPrimaryDark"
             android:layout_width="match_parent"

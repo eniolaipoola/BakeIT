@@ -29,7 +29,6 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -43,7 +42,7 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
     RecipeModel recipeModel;
     String recipeName;
     private SimpleExoPlayer exoPlayer;
-    private PlayerView exoPlayerView;
+    private SimpleExoPlayerView exoPlayerView;
     String recipeVideoUrl;
     MediaSessionCompat mediaSessionCompat;
     private static final String TAG = "media_session_tag";
@@ -70,7 +69,7 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
 
 
         Intent intent = getIntent();
-        exoPlayerView = findViewById(R.id.playerView);
+        exoPlayerView = (SimpleExoPlayerView) findViewById(R.id.playerView);
         if(intent != null){
             recipeDescription =
                     (RecipeDescription) intent.getSerializableExtra("RECIPE_DESCRIPTION");
@@ -155,7 +154,7 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
     /** Release media player*/
     private void releasePlayer(){
         if(exoPlayer != null){
-            mNotificationManger.cancelAll();
+            //mNotificationManger.cancelAll();
             exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
@@ -195,7 +194,7 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
             stateCompatBuilder.setState(PlaybackStateCompat.STATE_PAUSED, exoPlayer.getCurrentPosition(), 1f);
         }
         mediaSessionCompat.setPlaybackState(stateCompatBuilder.build());
-        showNotification(stateCompatBuilder.build());
+        //showNotification(stateCompatBuilder.build());
     }
 
     private class MediaSessionCallback extends MediaSessionCompat.Callback {
