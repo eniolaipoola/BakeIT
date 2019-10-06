@@ -3,6 +3,7 @@ package com.eniola.bakeit.UIs;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import com.eniola.bakeit.models.OnRecipeStepInstructionClickedListener;
 import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeIngredient;
 import com.eniola.bakeit.models.RecipeModel;
+import com.eniola.bakeit.utilities.APPConstant;
+
 import java.util.List;
 
 public class RecipeInformationActivity extends AppCompatActivity implements OnRecipeStepInstructionClickedListener,
@@ -79,6 +82,7 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
         if(intent != null){
             recipeModel = (RecipeModel) intent.getSerializableExtra("RECIPE");
             if(recipeModel != null){
+                Log.d(APPConstant.DEBUG_TAG, "RECIPE MODEL RECEIVED IS " + recipeModel.getName());
                 recipeName = recipeModel.getName();
                 List<RecipeIngredient> recipeIngredients = recipeModel.getRecipeIngredientList();
                 recipeIngredientAdapter = new RecipeIngredientAdapter(recipeIngredients);

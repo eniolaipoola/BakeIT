@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import com.eniola.bakeit.UIs.RecipeActivity;
+import com.eniola.bakeit.UIs.RecipeInformationActivity;
+import com.eniola.bakeit.utilities.APPConstant;
 
 /**
  * Implementation of App Widget functionality.
@@ -17,18 +19,15 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
+        RemoteViews remoteViews;
         Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
         int width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        Log.d("Debug", "app widget width size is " + width);
-        RemoteViews remoteViews;
-        if(width < 300){
-            //remoteViews = makeWidgetLaunchDefaultActivity(context);
-            remoteViews = makeWidgetLaunchService(context);
+        Log.d(APPConstant.DEBUG_TAG, "width is " + width);
+        if(width < 250){
+            remoteViews = makeWidgetLaunchDefaultActivity(context);
         } else {
             remoteViews = getRecipesGridRemoteView(context);
         }
-        // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
@@ -38,6 +37,28 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+    }
+
+    public static void updateAppWidgetIds(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds){
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
+        }
+    }
+
+
+    private static RemoteViews getRecipesGridRemoteView(Context context){
+        Log.d(APPConstant.DEBUG_TAG, "It came here, the gridview remoteview");
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_grid_view);
+        Intent intent = new Intent(context, GridWidgetService.class);
+        remoteViews.setRemoteAdapter(R.id.widget_grid_view, intent);
+
+        //set RecipeInformationActivity to launch when clicked
+        Intent appIntent = new Intent(context, RecipeInformationActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, appIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setPendingIntentTemplate(R.id.widget_grid_view, pendingIntent);
+        remoteViews.setEmptyView(R.id.widget_grid_view, R.id.empty_view);
+        return  remoteViews;
     }
 
     @Override
@@ -52,7 +73,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        RecipeIngredientService.startActionDisplayRecipeActivityPage(context);
+        RecipeIngredientService.startActionDisplayRecipeIngredientList(context);
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
     }
 
@@ -65,26 +86,12 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
     }
 
     private static RemoteViews makeWidgetLaunchService(Context context){
-        // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget_provider);
         Intent intent = new Intent(context, RecipeIngredientService.class);
-        intent.putExtra(RecipeIngredientService.RECIPE_ID, 3);
-        intent.setAction(RecipeIngredientService.ACTION_DISPLAY_RECIPE_ACTIVITY_PAGE);
+        intent.setAction(RecipeIngredientService.ACTION_DISPLAY_RECIPE_INGRDIENT_LIST);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.appwidget_imageview, pendingIntent);
         return views;
-    }
-
-    private static RemoteViews getRecipesGridRemoteView(Context context){
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget_provider);
-        Intent intent = new Intent(context, GridWidgetService.class);
-        remoteViews.setRemoteAdapter(R.id.appwidget_imageview, intent);
-        Intent appIntent = new Intent(context, RecipeActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, appIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setPendingIntentTemplate(R.id.widget_grid_view, pendingIntent);
-        remoteViews.setEmptyView(R.id.widget_grid_view, R.id.empty_view);
-        return  remoteViews;
     }
 }
 
