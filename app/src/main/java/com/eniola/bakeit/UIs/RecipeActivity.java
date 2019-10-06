@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Toast;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
@@ -25,7 +24,6 @@ import com.eniola.bakeit.models.OnRecipeSelectedListener;
 import com.eniola.bakeit.models.RecipeModel;
 import com.eniola.bakeit.utilities.APPConstant;
 import com.eniola.bakeit.utilities.APPUtility;
-
 import java.util.List;
 
 public class RecipeActivity extends AppCompatActivity implements RecipeDataInterface.OnRecipeFetchedListener,
@@ -63,7 +61,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
             if(isPhone){
                 gridLayoutManager = new GridLayoutManager(this,
                         1, GridLayoutManager.VERTICAL, false);
-
             } else {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
                 gridLayoutManager = new GridLayoutManager(this,
