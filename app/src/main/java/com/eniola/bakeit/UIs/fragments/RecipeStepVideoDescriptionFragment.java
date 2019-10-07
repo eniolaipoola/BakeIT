@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -38,14 +40,14 @@ public class RecipeStepVideoDescriptionFragment extends Fragment implements ExoP
     private int currentStepId;
     private SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView exoPlayerView;
-    String recipeVideoUrl, description;
-    Context mContext;
-    RecipeModel recipeModel;
-    MediaSessionCompat mediaSessionCompat;
+    private String recipeVideoUrl, description;
+    private Context mContext;
+    private RecipeModel recipeModel;
+    private MediaSessionCompat mediaSessionCompat;
     private static final String TAG = "media_session_tag";
-    PlaybackStateCompat.Builder stateCompatBuilder;
-    RecipeDescription recipeDescription;
-    FragmentRecipeStepVideoDescriptionBinding videoDescriptionBinding;
+    private PlaybackStateCompat.Builder stateCompatBuilder;
+    private RecipeDescription recipeDescription;
+    private FragmentRecipeStepVideoDescriptionBinding videoDescriptionBinding;
 
     public RecipeStepVideoDescriptionFragment() {
         // Required empty public constructor
@@ -79,7 +81,7 @@ public class RecipeStepVideoDescriptionFragment extends Fragment implements ExoP
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         videoDescriptionBinding = DataBindingUtil.inflate(inflater,
@@ -100,6 +102,7 @@ public class RecipeStepVideoDescriptionFragment extends Fragment implements ExoP
         exoPlayerView = rootView.findViewById(R.id.fragment_playerView);
 
         videoDescriptionBinding.fragmentInstructionTextView.setText(description);
+        releasePlayer();
         initiateMediaPlayer(Uri.parse(recipeVideoUrl));
 
 
@@ -130,21 +133,9 @@ public class RecipeStepVideoDescriptionFragment extends Fragment implements ExoP
         return rootView;
     }
 
-    private void getCurrentStepInstructions(int currentStepId){
-        List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
-        int recipeDescriptionSize = recipeDescriptions.size();
-        if(currentStepId < recipeDescriptionSize){
-            recipeVideoUrl = recipeDescriptions.get(currentStepId).getVideoURL();
-            releasePlayer();
-            initiateMediaPlayer(Uri.parse(recipeVideoUrl));
-            videoDescriptionBinding.fragmentInstructionTextView.setText(recipeDescriptions.get(currentStepId).getDescription());
-        }
-    }
-
     /** Initialize media player*/
     private void initiateMediaPlayer(Uri mediaUri){
         if(exoPlayer == null){
-            Log.d(APPConstant.DEBUG_TAG, "Let's see if exoplayer is null");
             //create an exoPlayer instance
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
@@ -156,8 +147,6 @@ public class RecipeStepVideoDescriptionFragment extends Fragment implements ExoP
                     new DefaultExtractorsFactory(), null, null);
             exoPlayer.prepare(videoSource);
             exoPlayer.setPlayWhenReady(true);
-        } else {
-            Log.d(APPConstant.DEBUG_TAG, "exoplayer is not null");
         }
     }
 
