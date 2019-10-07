@@ -47,7 +47,6 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
 
     private static RemoteViews getRecipesGridRemoteView(Context context){
-        Log.d(APPConstant.DEBUG_TAG, "It came here, the gridview remoteview");
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_grid_view);
         Intent intent = new Intent(context, GridWidgetService.class);
         remoteViews.setRemoteAdapter(R.id.widget_grid_view, intent);

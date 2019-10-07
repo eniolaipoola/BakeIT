@@ -36,7 +36,7 @@
                 android:resource="@xml/baking_app_widget_provider_info" />
         </receiver>
 
-        <activity android:name=".UIs.RecipeInformationDescription" />
+        <activity android:name=".UIs.RecipeStepVideoDescription" />
 
         <activity android:name=".UIs.RecipeInformationActivity" />
 

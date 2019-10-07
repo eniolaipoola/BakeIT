@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -34,7 +33,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import java.util.List;
 
-public class RecipeInformationDescription extends AppCompatActivity implements ExoPlayer.EventListener {
+public class RecipeStepVideoDescription extends AppCompatActivity implements ExoPlayer.EventListener {
 
     ActivityRecipeDescriptionBinding recipeDescriptionBinding;
     int currentStepId;
@@ -66,10 +65,8 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
         mediaSessionCompat.setCallback(new MediaSessionCallback());
         mediaSessionCompat.setActive(true);
 
-
-
         Intent intent = getIntent();
-        exoPlayerView = (SimpleExoPlayerView) findViewById(R.id.playerView);
+        exoPlayerView =  findViewById(R.id.playerView);
         if(intent != null){
             recipeDescription =
                     (RecipeDescription) intent.getSerializableExtra("RECIPE_DESCRIPTION");
@@ -249,7 +246,5 @@ public class RecipeInformationDescription extends AppCompatActivity implements E
 
         mNotificationManger = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationManger.notify(0, builder.build());
-
-
     }
 }

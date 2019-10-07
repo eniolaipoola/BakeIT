@@ -49,7 +49,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
         apiClient = new APIClient();
         apiService = apiClient.getRetrofit(APPConstant.BASE_URL).create(APIService.class);
         recipeData = new RecipeData(apiService);
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         setTitle(R.string.baking_time);
 
         if(appUtility.isInternetAvailable(mContext)){
@@ -96,14 +95,16 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
 
     //View Utility methods
     private void removeDialogFragment(String fragmentTag) {
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         DialogFragment dialogFragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
         if(dialogFragment != null){
-            getSupportFragmentManager().beginTransaction().
+            fragmentTransaction.
                     remove(dialogFragment).commit();
         }
     }
 
     private void showLoadingDialogFragment(){
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Fragment loadingFragment = getSupportFragmentManager().findFragmentByTag(AppLoadingViewFragment.class.getName());
         if(loadingFragment != null){
             fragmentTransaction.remove(loadingFragment);
@@ -115,6 +116,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
     }
 
     private void showErrorDialogFragment(String errorMessage){
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Fragment errorFragment = getSupportFragmentManager().findFragmentByTag(AppErrorViewFragment.class.getName());
         if(errorFragment != null){
             fragmentTransaction.remove(errorFragment);
