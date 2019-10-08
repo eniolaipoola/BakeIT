@@ -57,6 +57,8 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
             recipeInformationBinding.descriptionRecyclerView.setLayoutManager(descriptionLayoutManager);
             recipeInformationBinding.descriptionRecyclerView.setHasFixedSize(true);
 
+            recipeInformationBinding.ingredientTextView.setText(recipeName);
+
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
             recipeInformationBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_information);
