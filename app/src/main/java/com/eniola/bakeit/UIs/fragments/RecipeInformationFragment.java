@@ -62,11 +62,11 @@ public class RecipeInformationFragment extends Fragment implements OnRecipeStepI
                 recipeDescriptions = currentRecipe.getRecipeDescriptionList();
 
                 recipeIngredientAdapter = new RecipeIngredientAdapter(recipeIngredients);
-                recipeInformationBinding.fragmentIngredient.setAdapter(recipeIngredientAdapter);
+                recipeInformationBinding.fragmentIngredientRecyclerview.setAdapter(recipeIngredientAdapter);
                 recipeIngredientAdapter.notifyDataSetChanged();
 
                 recipeStepAdapter = new RecipeStepAdapter(recipeDescriptions, this);
-                recipeInformationBinding.fragmentStepDescription.setAdapter(recipeStepAdapter);
+                recipeInformationBinding.fragmentStepDescriptionRecyclerView.setAdapter(recipeStepAdapter);
                 recipeStepAdapter.notifyDataSetChanged();
 
             } else {
@@ -76,13 +76,13 @@ public class RecipeInformationFragment extends Fragment implements OnRecipeStepI
 
         gridLayoutManager = new GridLayoutManager(this.getContext(), 1, GridLayoutManager.HORIZONTAL,
                 false);
-        recipeInformationBinding.fragmentIngredient.setLayoutManager(gridLayoutManager);
-        recipeInformationBinding.fragmentIngredient.setHasFixedSize(true);
+        recipeInformationBinding.fragmentIngredientRecyclerview.setLayoutManager(gridLayoutManager);
+        recipeInformationBinding.fragmentIngredientRecyclerview.setHasFixedSize(true);
 
         descriptionLayoutManager = new GridLayoutManager(this.getContext(), 1, GridLayoutManager.VERTICAL,
                 false);
-        recipeInformationBinding.fragmentStepDescription.setLayoutManager(descriptionLayoutManager);
-        recipeInformationBinding.fragmentStepDescription.setHasFixedSize(true);
+        recipeInformationBinding.fragmentStepDescriptionRecyclerView.setLayoutManager(descriptionLayoutManager);
+        recipeInformationBinding.fragmentStepDescriptionRecyclerView.setHasFixedSize(true);
         return  rootview;
     }
 
@@ -101,7 +101,7 @@ public class RecipeInformationFragment extends Fragment implements OnRecipeStepI
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         RecipeStepVideoDescriptionFragment stepVideoDescriptionFragment =
                 RecipeStepVideoDescriptionFragment.newInstance(currentRecipe, recipeDescription);
-        fragmentTransaction.replace(R.id.fragment_step_description, stepVideoDescriptionFragment);
+        fragmentTransaction.replace(R.id.fragment_step_description_page, stepVideoDescriptionFragment);
         fragmentTransaction.commit();
     }
 }

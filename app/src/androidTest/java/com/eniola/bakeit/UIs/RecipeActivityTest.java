@@ -1,11 +1,9 @@
 package com.eniola.bakeit.UIs;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-
 import com.eniola.bakeit.R;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
@@ -14,8 +12,8 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 public class RecipeActivityTest {
@@ -35,20 +33,24 @@ public class RecipeActivityTest {
     @Test
     public void testThatRecipeRecyclerViewIsScrollable(){
         //launchers recipe activity and scrolls to the last item on the view
-        RecyclerView recyclerView = mActivityTestRule.getActivity().findViewById(R.id.recipe_item_view);
-        int itemCount = recyclerView.getAdapter().getItemCount();
-
-        onView(withId(R.id.recipe_item_view)).inRoot(RootMatchers.withDecorView(
+        onView(withId(R.id.grid_recycler_view)).inRoot(RootMatchers.withDecorView(
                 Matchers.is(mActivityTestRule.getActivity().getWindow().getDecorView())))
-                .perform(RecyclerViewActions.scrollToPosition(itemCount-1));
-
+                .perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
     }
 
     @Test
     public void testThatRecipeItemViewIsDisplayed(){
         onView(withId(R.id.grid_recycler_view)).inRoot(RootMatchers.withDecorView(
-                Matchers.is(mActivityTestRule.getActivity().getWindow().getDecorView())))
-                .check(matches(atPosition(1, Matchers.allOf(withId(R.id.recipe_item_view), isDisplayed()))));
+                Matchers.is(mActivityTestRule.getActivity().getWindow().getDecorView()))).perform(
+                        RecyclerViewActions.scrollToPosition(2), click());
+        onView(withId(R.id.recipeNameTextView)).check(matches(withText("Brownies")));
     }
 
+   /*@Rule
+    public IntentsTestRule<RecipeActivity> intentTestRule = new IntentsTestRule<>(RecipeActivity.class);
+
+    @Test
+    public void validateIntentSentToRecipeInformationActivity(){
+
+    }*/
 }
