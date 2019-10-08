@@ -2,6 +2,7 @@ package com.eniola.bakeit.UIs;
 
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -74,22 +75,22 @@ public class RecipeStepVideoDescription extends AppCompatActivity implements Exo
             recipeName = recipeModel.getName();
         }
         getRecipeInstruction();
-
         recipeDescriptionBinding.nextStep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentStepId = currentStepId + 1;
-                getCurrentStepInstructions(currentStepId);
-            }
+                @Override
+                public void onClick(View view) {
+                    currentStepId = currentStepId + 1;
+                    getCurrentStepInstructions(currentStepId);
+                }
         });
 
         recipeDescriptionBinding.prevStep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentStepId = currentStepId - 1;
-                getCurrentStepInstructions(currentStepId);
-            }
+                @Override
+                public void onClick(View view) {
+                    currentStepId = currentStepId - 1;
+                    getCurrentStepInstructions(currentStepId);
+                }
         });
+
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -97,6 +98,7 @@ public class RecipeStepVideoDescription extends AppCompatActivity implements Exo
         }
         setTitle(recipeName);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -113,8 +115,14 @@ public class RecipeStepVideoDescription extends AppCompatActivity implements Exo
         if(recipeDescription != null){
             currentStepId = recipeDescription.getId();
             recipeVideoUrl = recipeDescription.getVideoURL();
-            recipeDescriptionBinding.recipeInstructionTextView.setText(recipeDescription.getDescription());
             initiateMediaPlayer(Uri.parse(recipeVideoUrl));
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                //hide other views
+                recipeDescriptionBinding.recipeInstructionTextView.setVisibility(View.GONE);
+                recipeDescriptionBinding.nextStep.setVisibility(View.GONE);
+                recipeDescriptionBinding.prevStep.setVisibility(View.GONE);
+            }
+            recipeDescriptionBinding.recipeInstructionTextView.setText(recipeDescription.getDescription());
         }
     }
 

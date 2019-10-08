@@ -5,11 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -18,7 +16,6 @@ import com.eniola.bakeit.R;
 import com.eniola.bakeit.databinding.FragmentRecipeStepVideoDescriptionBinding;
 import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeModel;
-import com.eniola.bakeit.utilities.APPConstant;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -65,19 +62,6 @@ public class RecipeStepVideoDescriptionFragment extends Fragment implements ExoP
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null) {
-            recipeModel = (RecipeModel) getArguments().getSerializable("RECIPE_MODEL");
-            recipeDescription = (RecipeDescription) getArguments().getSerializable("RECIPE_DESCRIPTION");
-            recipeName = recipeModel.getName();
-            if (recipeDescription != null) {
-                currentStepId = recipeDescription.getId();
-                recipeVideoUrl = recipeDescription.getVideoURL();
-                description = recipeDescription.getDescription();
-                Log.d(APPConstant.DEBUG_TAG, "current step in description  is " + currentStepId);
-                Log.d(APPConstant.DEBUG_TAG, "video url  is " + recipeVideoUrl);
-                Log.d(APPConstant.DEBUG_TAG, "text description   is " + description);
-            }
-        }
     }
 
     @Override
@@ -101,36 +85,48 @@ public class RecipeStepVideoDescriptionFragment extends Fragment implements ExoP
         mediaSessionCompat.setActive(true);
         exoPlayerView = rootView.findViewById(R.id.fragment_playerView);
 
-        videoDescriptionBinding.fragmentInstructionTextView.setText(description);
-        releasePlayer();
-        initiateMediaPlayer(Uri.parse(recipeVideoUrl));
+        if(getArguments() != null) {
+            recipeModel = (RecipeModel) getArguments().getSerializable("RECIPE_MODEL");
+            recipeDescription = (RecipeDescription) getArguments().getSerializable("RECIPE_DESCRIPTION");
+            recipeName = recipeModel.getName();
+            if (recipeDescription != null) {
+                currentStepId = recipeDescription.getId();
+                recipeVideoUrl = recipeDescription.getVideoURL();
+                description = recipeDescription.getDescription();
+                videoDescriptionBinding.fragmentInstructionTextView.setText(description);
+                releasePlayer();
+                initiateMediaPlayer(Uri.parse(recipeVideoUrl));
+            }
+        }
 
-
-        Log.d(APPConstant.DEBUG_TAG, "current step in description in onCreateView  is " + currentStepId);
-        Log.d(APPConstant.DEBUG_TAG, "video url in onCreateView is " + recipeVideoUrl);
-        Log.d(APPConstant.DEBUG_TAG, "text description in onCreateView   is " + description);
-
-        /*informationDescriptionBinding.nextStep.setOnClickListener(new View.OnClickListener() {
+        videoDescriptionBinding.nextStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(APPConstant.DEBUG_TAG, "current step id  is " + currentStepId);
                     currentStepId = currentStepId + 1;
                     getCurrentStepInstructions(currentStepId);
-                    Log.d(APPConstant.DEBUG_TAG, "current step id incremented is " + currentStepId);
+                }
+        });
+
+        videoDescriptionBinding.prevStep.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    currentStepId = currentStepId - 1;
+                    getCurrentStepInstructions(currentStepId);
                 }
             });
 
-            informationDescriptionBinding.prevStep.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d(APPConstant.DEBUG_TAG, "current step id  is " + currentStepId);
-                    currentStepId = currentStepId - 1;
-                    Log.d(APPConstant.DEBUG_TAG, "current step id decremented  is " + currentStepId);
-                    getCurrentStepInstructions(currentStepId);
-                }
-            });*/
-
         return rootView;
+    }
+
+    private void getCurrentStepInstructions(int currentStepId){
+        List<RecipeDescription> recipeDescriptions = recipeModel.getRecipeDescriptionList();
+        int recipeDescriptionSize = recipeDescriptions.size();
+        if(currentStepId < recipeDescriptionSize){
+            recipeVideoUrl = recipeDescriptions.get(currentStepId).getVideoURL();
+            releasePlayer();
+            initiateMediaPlayer(Uri.parse(recipeVideoUrl));
+            videoDescriptionBinding.fragmentInstructionTextView.setText(recipeDescriptions.get(currentStepId).getDescription());
+        }
     }
 
     /** Initialize media player*/

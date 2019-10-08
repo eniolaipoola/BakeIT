@@ -3,11 +3,11 @@ package com.eniola.bakeit.UIs;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import com.eniola.bakeit.R;
@@ -20,7 +20,6 @@ import com.eniola.bakeit.models.OnRecipeStepInstructionClickedListener;
 import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeIngredient;
 import com.eniola.bakeit.models.RecipeModel;
-import com.eniola.bakeit.utilities.APPConstant;
 import java.util.List;
 
 public class RecipeInformationActivity extends AppCompatActivity implements OnRecipeStepInstructionClickedListener{
@@ -56,10 +55,11 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
                     false);
             recipeInformationBinding.descriptionRecyclerView.setLayoutManager(descriptionLayoutManager);
             recipeInformationBinding.descriptionRecyclerView.setHasFixedSize(true);
+            recipeInformationBinding.ingredientTextView.setText(recipeName);
 
         } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
             recipeInformationBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_information);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
             recipeInformationBinding.getRoot();
 
             //fetch selected recipe details
@@ -67,17 +67,18 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
             if(intent != null) {
                 recipeModel = (RecipeModel) intent.getSerializableExtra("RECIPE");
                 if(recipeModel != null){
-                    Log.d(APPConstant.DEBUG_TAG, " it got to not nul saved instance state");
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    RecipeInformationFragment recipeInformationFragment = RecipeInformationFragment.newInstance(recipeModel);
-                    fragmentTransaction.replace(R.id.fragment_ingredient, recipeInformationFragment);
-                    fragmentTransaction.commit();
+                    if(savedInstanceState != null){
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        Fragment recipeInformationFragment = RecipeInformationFragment.newInstance(recipeModel);
+                        fragmentTransaction.replace(R.id.fragment_ingredient_page, recipeInformationFragment);
+                        fragmentTransaction.commit();
 
-                    FragmentTransaction stepDescriptionFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    RecipeStepVideoDescriptionFragment stepVideoDescriptionFragment =
-                            RecipeStepVideoDescriptionFragment.newInstance(recipeModel, recipeDescriptionModel);
-                    stepDescriptionFragmentTransaction.replace(R.id.fragment_step_description, stepVideoDescriptionFragment);
-                    stepDescriptionFragmentTransaction.commit();
+                        FragmentTransaction stepDescriptionFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        RecipeStepVideoDescriptionFragment stepVideoDescriptionFragment =
+                                RecipeStepVideoDescriptionFragment.newInstance(recipeModel, recipeDescriptionModel);
+                        stepDescriptionFragmentTransaction.replace(R.id.fragment_step_description_page, stepVideoDescriptionFragment);
+                        stepDescriptionFragmentTransaction.commit();
+                    }
                 }
             }
         }

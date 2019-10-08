@@ -99,7 +99,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeDataInter
         DialogFragment dialogFragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
         if(dialogFragment != null){
             fragmentTransaction.
-                    remove(dialogFragment).commit();
+                    remove(dialogFragment).commitAllowingStateLoss();
         }
     }
 
