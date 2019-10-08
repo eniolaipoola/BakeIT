@@ -14,21 +14,21 @@
             android:id="@+id/playerView"
             android:background="@color/colorPrimaryDark"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
+            android:layout_margin="16dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/recipeInstructionTextView"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/recipeInstructionTextView"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:textSize="20sp"
             android:gravity="center"
             android:typeface="serif"
             android:textColor="#263238"
-            android:layout_margin="16dp"
             android:paddingBottom="8dp"
             android:text="@string/recipe_name"
             app:layout_constraintTop_toBottomOf="@+id/playerView"
@@ -36,8 +36,8 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/prevStep"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginBottom="24dp"
             android:src="@drawable/ic_arrow_left_24"
@@ -46,8 +46,8 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/nextStep"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"

@@ -8,58 +8,56 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".UIs.fragments.RecipeInformationDescriptionFragment">
+        tools:context=".UIs.fragments.RecipeStepVideoDescriptionFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".UIs.RecipeInformationDescription">
+            tools:context=".UIs.RecipeStepVideoDescription">
 
-            <ImageView
-                android:id="@+id/recipeImageView"
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:id="@+id/fragment_playerView"
                 android:background="@color/colorPrimaryDark"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:adjustViewBounds="true"
-                tools:ignore="ContentDescription"
-                android:scaleType="centerCrop"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/fragmentInstructionTextView"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
-                android:id="@+id/recipeInstructionTextView"
-                android:layout_height="wrap_content"
+                android:id="@+id/fragmentInstructionTextView"
+                android:layout_height="300dp"
                 android:layout_width="match_parent"
                 android:textSize="20sp"
                 android:gravity="center"
                 android:typeface="serif"
+                android:layout_margin="16dp"
                 android:paddingBottom="8dp"
-                android:text="@string/recipe_name"
-                app:layout_constraintTop_toBottomOf="@+id/recipeImageView"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textAllCaps="true" />
+                app:layout_constraintTop_toBottomOf="@+id/fragment_playerView"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/prevStep"
-                android:layout_height="50dp"
                 android:layout_width="50dp"
-                android:layout_marginBottom="16dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="24dp"
                 android:src="@drawable/ic_arrow_left_24"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recipeInstructionTextView"/>
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/nextStep"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_arrow_right_24"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recipeInstructionTextView"/>
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

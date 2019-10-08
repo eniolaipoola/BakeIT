@@ -24,7 +24,7 @@
                 android:adjustViewBounds="true"
                 tools:ignore="ContentDescription"
                 android:scaleType="centerCrop"
-                android:src="@drawable/recipe_default_image"
+                android:src="@drawable/baking_image"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 

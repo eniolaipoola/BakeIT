@@ -7,32 +7,32 @@ import android.view.MenuItem;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import com.eniola.bakeit.R;
 import com.eniola.bakeit.UIs.adapters.RecipeIngredientAdapter;
 import com.eniola.bakeit.UIs.adapters.RecipeStepAdapter;
-import com.eniola.bakeit.UIs.fragments.RecipeInformationDescriptionFragment;
 import com.eniola.bakeit.UIs.fragments.RecipeInformationFragment;
+import com.eniola.bakeit.UIs.fragments.RecipeStepVideoDescriptionFragment;
 import com.eniola.bakeit.databinding.ActivityRecipeInformationBinding;
-import com.eniola.bakeit.databinding.ActivityRecipeInformationTabletBinding;
 import com.eniola.bakeit.models.OnRecipeStepInstructionClickedListener;
 import com.eniola.bakeit.models.RecipeDescription;
 import com.eniola.bakeit.models.RecipeIngredient;
 import com.eniola.bakeit.models.RecipeModel;
 import java.util.List;
 
-public class RecipeInformationActivity extends AppCompatActivity implements OnRecipeStepInstructionClickedListener,
-        RecipeInformationFragment.OnRecipeStepClickedListener {
+public class RecipeInformationActivity extends AppCompatActivity implements OnRecipeStepInstructionClickedListener{
 
     private RecipeIngredientAdapter recipeIngredientAdapter;
     private RecipeStepAdapter recipeStepAdapter;
     ActivityRecipeInformationBinding recipeInformationBinding;
-    ActivityRecipeInformationTabletBinding recipeInformationTabletBinding;
     String recipeName;
     List<RecipeDescription> recipeDescriptions;
     RecipeModel recipeModel;
+    RecipeDescription recipeDescriptionModel;
     GridLayoutManager gridLayoutManager;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,26 +44,42 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
             recipeInformationBinding.getRoot();
             getRecipeIngredient();
 
+            //bind recipe ingredients to its recycler view
             gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL,
                     false);
             recipeInformationBinding.ingredientRecyclerView.setLayoutManager(gridLayoutManager);
             recipeInformationBinding.ingredientRecyclerView.setHasFixedSize(true);
+
+            //bind recipe steps to its recycler view
             GridLayoutManager descriptionLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL,
                     false);
             recipeInformationBinding.descriptionRecyclerView.setLayoutManager(descriptionLayoutManager);
             recipeInformationBinding.descriptionRecyclerView.setHasFixedSize(true);
+            recipeInformationBinding.ingredientTextView.setText(recipeName);
 
         } else {
+            recipeInformationBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_information);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
-            recipeInformationTabletBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_information_tablet);
-            recipeInformationTabletBinding.getRoot();
-            if(savedInstanceState != null){
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                RecipeInformationFragment informationFragment = new RecipeInformationFragment();
-                fragmentTransaction.add(R.id.fragment_ingredient, informationFragment).commit();
+            recipeInformationBinding.getRoot();
 
-                RecipeInformationDescriptionFragment descriptionFragment = new RecipeInformationDescriptionFragment();
-                fragmentTransaction.add(R.id.fragment_step_description, descriptionFragment).commit();
+            //fetch selected recipe details
+            intent = getIntent();
+            if(intent != null) {
+                recipeModel = (RecipeModel) intent.getSerializableExtra("RECIPE");
+                if(recipeModel != null){
+                    if(savedInstanceState != null){
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        Fragment recipeInformationFragment = RecipeInformationFragment.newInstance(recipeModel);
+                        fragmentTransaction.replace(R.id.fragment_ingredient_page, recipeInformationFragment);
+                        fragmentTransaction.commit();
+
+                        FragmentTransaction stepDescriptionFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        RecipeStepVideoDescriptionFragment stepVideoDescriptionFragment =
+                                RecipeStepVideoDescriptionFragment.newInstance(recipeModel, recipeDescriptionModel);
+                        stepDescriptionFragmentTransaction.replace(R.id.fragment_step_description_page, stepVideoDescriptionFragment);
+                        stepDescriptionFragmentTransaction.commit();
+                    }
+                }
             }
         }
 
@@ -75,7 +91,7 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
     }
 
     public void getRecipeIngredient(){
-        Intent intent = getIntent();
+        intent = getIntent();
         if(intent != null){
             recipeModel = (RecipeModel) intent.getSerializableExtra("RECIPE");
             if(recipeModel != null){
@@ -95,7 +111,7 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
 
     @Override
     public void onRecipeStepInstructionClicked(RecipeDescription recipeDescription) {
-        Intent intent = new Intent(this, RecipeInformationDescription.class);
+        Intent intent = new Intent(this, RecipeStepVideoDescription.class);
         intent.putExtra("RECIPE_DESCRIPTION", recipeDescription);
         intent.putExtra("RECIPE_MODEL", recipeModel);
         this.startActivity(intent);
@@ -109,10 +125,5 @@ public class RecipeInformationActivity extends AppCompatActivity implements OnRe
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onRecipeStepClicked() {
-
     }
 }

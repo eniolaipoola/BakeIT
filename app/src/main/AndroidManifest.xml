@@ -12,13 +12,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UIs.RecipeInformationDescription"></activity>
+
+        <service
+            android:name=".RecipeIngredientService"
+            android:exported="false">
+
+        </service>
+
+        <service
+            android:name=".GridWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false">
+
+        </service>
+
+        <receiver android:name=".BakingAppWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_app_widget_provider_info" />
+        </receiver>
+
+        <activity android:name=".UIs.RecipeStepVideoDescription" />
+
         <activity android:name=".UIs.RecipeInformationActivity" />
+
         <activity android:name=".UIs.RecipeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".UIs.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

@@ -34,7 +34,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ingredientRecyclerView"
+                    android:id="@+id/fragmentIngredientRecyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ingredientRecyclerView">
+                    app:layout_constraintTop_toBottomOf="@+id/fragmentIngredientRecyclerview">
 
                     <TextView
                         android:id="@+id/descriptionTextView"
@@ -60,13 +60,14 @@
                         android:typeface="serif" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/description_recycler_view"
+                        android:id="@+id/fragmentStepDescriptionRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.core.widget.NestedScrollView>
     </FrameLayout>
 </layout>

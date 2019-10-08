@@ -36,7 +36,7 @@ public class RecipeStepAdapter  extends RecyclerView.Adapter<RecipeStepAdapter.R
     @Override
     public void onBindViewHolder(@NonNull RecipeStepViewHolder holder, int position) {
         final RecipeDescription recipeDescription = recipeDescriptionList.get(position);
-        holder.bindDescriptionTOView(recipeDescription, stepInstructionClickedListener);
+        holder.bindDescriptionToView(recipeDescription, stepInstructionClickedListener);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class RecipeStepAdapter  extends RecyclerView.Adapter<RecipeStepAdapter.R
 
         }
 
-        private void bindDescriptionTOView(final RecipeDescription recipeDescription,
+        private void bindDescriptionToView(final RecipeDescription recipeDescription,
                                            final OnRecipeStepInstructionClickedListener stepInstructionClickedListener){
             itemRecipeStepBinding.stepNumberTextView.setText(String.valueOf(recipeDescription.getId()));
             itemRecipeStepBinding.recipeShortDescriptionTextView.setText(recipeDescription.getShortDescription());
