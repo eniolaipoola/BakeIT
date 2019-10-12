@@ -1,7 +1,6 @@
 # Baking Application
 BakingApp shows a variety of recipes, there ingredients and instructions for preparing it in a user friendly manner.
-
-## It uses RecyclerView to display recipes in CardViews, on click of a Recipe launches its detail page.
+It uses RecyclerView to display recipes in CardViews, on click of a Recipe launches its detail page.
 Recipe details include the required ingredients in their correct proportions, and the step description of preparing the recipe.
 
 ### **Features**
@@ -13,5 +12,5 @@ Recipe details include the required ingredients in their correct proportions, an
 *The project uses DataBinding to bind UI components to data.
 *View groups used includes ConstraintLayout, LinearLayout and RecyclerView
 
-#### **Note**
+### **Note**
 Images used in constructing the user interface were downloaded from https://www.istockphoto.com/
