@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eniola.bakeit.databinding.ItemRecipeBinding;
 import com.eniola.bakeit.models.OnRecipeSelectedListener;
 import com.eniola.bakeit.models.RecipeModel;
-
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>  {

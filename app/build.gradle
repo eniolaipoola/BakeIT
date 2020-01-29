@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
+    /*signingConfigs {
         debug {
             storeFile file("keystore.jks")
             storePassword 'eniola11'
             keyAlias = 'BakeIt'
             keyPassword 'eniola11'
         }
-    }
+    }*/
 
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -26,7 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
-        debug {}
+        //debug {}
     }
 
     dataBinding.enabled = true
@@ -41,8 +41,8 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.2.0-alpha01'
-
+    implementation 'com.google.android.material:material:1.2.0-alpha03'
+ 
     //######################## ExoPlayer ###########################
     implementation 'com.google.android.exoplayer:exoplayer-core:2.9.0'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.9.0'
@@ -59,13 +59,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
 
     //########################### RecyclerView, Lottie and CardView##################################
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.airbnb.android:lottie:2.7.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //###################################### Networking #######################################//
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
